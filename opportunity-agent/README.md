@@ -25,3 +25,9 @@ Review each original notice for eligibility, set-aside, place of performance, an
 
 The dashboard is a local review tool. It does not run scheduled searches or provide secure login. Keep `opportunities.json` private if live results or notes should not be public. Do not commit API keys, client information, or private proposal drafts to GitHub.
 
+## Pipeline and capability statement
+
+The dashboard now lets you add a lead manually, change its stage, record a next action and follow-up date, and keep notes. This data is saved only in your browser's local storage. Use **Export pipeline JSON** to back it up and **Import pipeline JSON** to restore it. Clearing browser data or using another device will not sync the pipeline automatically. Avoid entering sensitive client data in a browser without a secure account-backed storage system.
+
+Open `capability_statement.html` in a browser and print it to PDF for a one-page draft. It uses known DGIT information but leaves the website, UEI, CAGE, NAICS codes, SAM status, certifications, and client-specific results for verification. Do not submit it to a buyer until those fields are checked.
+
