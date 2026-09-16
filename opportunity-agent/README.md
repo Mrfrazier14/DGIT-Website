@@ -29,5 +29,7 @@ The dashboard is a local review tool. It does not run scheduled searches or prov
 
 The dashboard now lets you add a lead manually, change its stage, record a next action and follow-up date, and keep notes. This data is saved only in your browser's local storage. Use **Export pipeline JSON** to back it up and **Import pipeline JSON** to restore it. Clearing browser data or using another device will not sync the pipeline automatically. Avoid entering sensitive client data in a browser without a secure account-backed storage system.
 
+The Excel tracker is the detailed system of record. It includes fit scoring, bid decisions, requirements and blockers, partner needs, amendment status, last-checked dates, email-draft status, and next-review dates. The **Agent settings** sheet records the approved search scope and guardrails: draft-only email, human approval for submissions, and human approval for pricing.
+
 Open `capability_statement.html` in a browser and print it to PDF for a one-page draft. It uses known DGIT information but leaves the website, UEI, CAGE, NAICS codes, SAM status, certifications, and client-specific results for verification. Do not submit it to a buyer until those fields are checked.
 
