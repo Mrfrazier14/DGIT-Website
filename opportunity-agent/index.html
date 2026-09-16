@@ -18,7 +18,14 @@
     .stat { min-width: 180px; flex: 1; }
     .stat strong { display: block; font-size: 2rem; }
     .controls { display: flex; gap: .7rem; flex-wrap: wrap; margin: 1.5rem 0; }
-    input, select { background: #101b2f; color: white; border: 1px solid #405674; border-radius: 8px; padding: .8rem; font: inherit; }
+    input, select, textarea, button { background: #101b2f; color: white; border: 1px solid #405674; border-radius: 8px; padding: .8rem; font: inherit; }
+    button { cursor: pointer; background: #245b61; border-color: #347d7d; }
+    button:hover { background: #327777; }
+    textarea { width: 100%; min-height: 75px; resize: vertical; }
+    label { display: block; color: #c2d0e0; margin: .7rem 0 .3rem; }
+    .pipeline-form { display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: .7rem; margin: 1rem 0; }
+    .pipeline-form input { width: 100%; }
+    .card select, .card input { width: 100%; }
     input { flex: 2; min-width: 220px; }
     select { flex: 1; min-width: 150px; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(290px,1fr)); gap: 1rem; }
@@ -35,16 +42,26 @@
   <main>
     <div class="summary"><div class="stat"><span>Matches</span><strong id="count">0</strong></div><div class="stat"><span>Contracts</span><strong id="contracts">0</strong></div><div class="stat"><span>Jobs</span><strong id="jobs">0</strong></div><div class="stat"><span>Last search</span><strong id="updated" style="font-size:1.2rem">—</strong></div></div>
     <div class="status" id="status">Loading results…</div>
-    <div class="controls"><input id="query" type="search" placeholder="Search titles and matched skills" aria-label="Search opportunities"><select id="kind" aria-label="Filter type"><option value="all">All opportunities</option><option value="Contract">Contracts</option><option value="Job">Jobs</option></select></div>
+    <section class="status"><h2>Bid and job pipeline</h2><p>Track each lead through New, Qualified, Drafting, Submitted, and Won/Lost. Changes stay in this browser. Export a backup regularly.</p>
+      <form id="manual-form" class="pipeline-form"><input id="manual-title" required maxlength="160" placeholder="Opportunity title" aria-label="Opportunity title"><input id="manual-url" type="url" placeholder="https://source-link" aria-label="Source link"><input id="manual-deadline" type="date" aria-label="Deadline"><select id="manual-kind" aria-label="Opportunity type"><option>Contract</option><option>Job</option></select><button type="submit">Add lead</button></form>
+      <button id="export" type="button">Export pipeline JSON</button> <label for="import" style="display:inline">Import pipeline JSON</label><input id="import" type="file" accept="application/json,.json" aria-label="Import pipeline JSON">
+    </section>
+    <div class="controls"><input id="query" type="search" placeholder="Search titles and matched skills" aria-label="Search opportunities"><select id="kind" aria-label="Filter type"><option value="all">All opportunities</option><option value="Contract">Contracts</option><option value="Job">Jobs</option></select><select id="stage-filter" aria-label="Filter pipeline stage"><option value="all">All stages</option><option>New</option><option>Qualified</option><option>Drafting</option><option>Submitted</option><option>Won</option><option>Lost</option></select></div>
     <div id="results" class="grid"></div>
   </main>
   <script>
     let opportunities = [];
+    const STORE = 'dgit-opportunity-pipeline-v1';
+    let pipeline = loadPipeline();
+    function loadPipeline() { try { const saved = JSON.parse(localStorage.getItem(STORE) || '{}'); return saved && typeof saved === 'object' && !Array.isArray(saved) ? saved : {}; } catch { return {}; } }
+    function savePipeline() { localStorage.setItem(STORE, JSON.stringify(pipeline)); }
+    function idFor(o) { return `${o.kind}|${o.link || o.title}`; }
     const text = value => String(value ?? '');
     function render() {
       const q = document.getElementById('query').value.toLowerCase();
       const kind = document.getElementById('kind').value;
-      const filtered = opportunities.filter(o => (kind === 'all' || o.kind === kind) && (text(o.title) + ' ' + text(o.matched?.join(' '))).toLowerCase().includes(q));
+      const stage = document.getElementById('stage-filter').value;
+      const filtered = opportunities.filter(o => (kind === 'all' || o.kind === kind) && (stage === 'all' || (pipeline[idFor(o)]?.stage || 'New') === stage) && (text(o.title) + ' ' + text(o.matched?.join(' '))).toLowerCase().includes(q));
       const grid = document.getElementById('results'); grid.replaceChildren();
       if (!filtered.length) { const e = document.createElement('div'); e.className = 'empty'; e.textContent = 'No matches to show. Run the tracker with API credentials or adjust the filters.'; grid.append(e); return; }
       for (const o of filtered) {
@@ -55,13 +72,26 @@
         const skills = document.createElement('p'); skills.textContent = `Matched: ${o.matched?.join(', ') || 'None'}`;
         const link = document.createElement('a'); link.textContent = 'Review original source →'; link.target = '_blank'; link.rel = 'noopener noreferrer';
         const url = text(o.link); if (/^https:\/\//.test(url)) link.href = url; else link.removeAttribute('href');
-        card.append(badge,title,meta,skills,link); grid.append(card);
+        const id = idFor(o); const state = pipeline[id] || {stage:'New', next_action:'', follow_up:'', notes:''};
+        const stageLabel = document.createElement('label'); stageLabel.textContent = 'Stage';
+        const stageSelect = document.createElement('select'); for (const value of ['New','Qualified','Drafting','Submitted','Won','Lost']) { const option = document.createElement('option'); option.textContent = value; stageSelect.append(option); } stageSelect.value = state.stage;
+        stageSelect.addEventListener('change', () => { pipeline[id] = {...(pipeline[id]||{}),stage:stageSelect.value}; savePipeline(); render(); });
+        const actionLabel = document.createElement('label'); actionLabel.textContent = 'Next action';
+        const action = document.createElement('input'); action.maxLength = 200; action.value = state.next_action || ''; action.placeholder = 'Check eligibility, call buyer…';
+        action.addEventListener('change', () => { pipeline[id] = {...(pipeline[id]||{}),next_action:action.value}; savePipeline(); });
+        const followLabel = document.createElement('label'); followLabel.textContent = 'Follow-up date';
+        const follow = document.createElement('input'); follow.type = 'date'; follow.value = state.follow_up || '';
+        follow.addEventListener('change', () => { pipeline[id] = {...(pipeline[id]||{}),follow_up:follow.value}; savePipeline(); });
+        const notesLabel = document.createElement('label'); notesLabel.textContent = 'Notes';
+        const notes = document.createElement('textarea'); notes.maxLength = 2000; notes.value = state.notes || '';
+        notes.addEventListener('change', () => { pipeline[id] = {...(pipeline[id]||{}),notes:notes.value}; savePipeline(); });
+        card.append(badge,title,meta,skills,link,stageLabel,stageSelect,actionLabel,action,followLabel,follow,notesLabel,notes); grid.append(card);
       }
     }
     Promise.resolve().then(async () => {
       const response = await fetch('opportunities.json', {cache:'no-store'});
       if (!response.ok) throw new Error('Run opportunity_agent.py to create opportunities.json.');
-      const data = await response.json(); opportunities = data.opportunities || [];
+      const data = await response.json(); opportunities = [...(data.opportunities || []),...Object.values(pipeline).filter(o=>o.manual)];
       document.getElementById('count').textContent = opportunities.length;
       document.getElementById('contracts').textContent = opportunities.filter(o=>o.kind==='Contract').length;
       document.getElementById('jobs').textContent = opportunities.filter(o=>o.kind==='Job').length;
@@ -71,6 +101,25 @@
     }).catch(err => { document.getElementById('status').textContent = err.message; render(); });
     document.getElementById('query').addEventListener('input', render);
     document.getElementById('kind').addEventListener('change', render);
+    document.getElementById('stage-filter').addEventListener('change', render);
+    document.getElementById('manual-form').addEventListener('submit', event => {
+      event.preventDefault(); const title = document.getElementById('manual-title').value.trim(); if (!title) return;
+      const item = {manual:true, kind:document.getElementById('manual-kind').value, title, link:document.getElementById('manual-url').value.trim(), deadline:document.getElementById('manual-deadline').value, score:0, matched:[]};
+      const id = idFor(item); pipeline[id] = {...item, stage:'New', next_action:'', follow_up:'', notes:''}; savePipeline();
+      opportunities = [...opportunities.filter(o=>idFor(o)!==id),item]; event.target.reset(); render();
+      document.getElementById('count').textContent = opportunities.length;
+      document.getElementById('contracts').textContent = opportunities.filter(o=>o.kind==='Contract').length;
+      document.getElementById('jobs').textContent = opportunities.filter(o=>o.kind==='Job').length;
+    });
+    document.getElementById('export').addEventListener('click', () => {
+      const blob = new Blob([JSON.stringify(pipeline,null,2)], {type:'application/json'});
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'dgit-pipeline-backup.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+    });
+    document.getElementById('import').addEventListener('change', async event => {
+      const file = event.target.files?.[0]; if (!file) return;
+      try { const data = JSON.parse(await file.text()); if (!data || typeof data !== 'object' || Array.isArray(data)) throw new Error('Invalid pipeline file');
+        pipeline = data; savePipeline(); location.reload(); } catch (error) { alert(error.message); } event.target.value = '';
+    });
   </script>
 </body>
 </html>
