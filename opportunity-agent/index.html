@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DGIT Opportunity Desk</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; background: #0c1424; color: #eef5ff; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    header { padding: 2rem clamp(1rem,5vw,5rem); border-bottom: 1px solid #24334c; background: linear-gradient(120deg,#12274a,#0c1424); }
+    h1 { margin: .2rem 0; font-size: clamp(1.8rem,4vw,3rem); }
+    p { color: #b9c9df; }
+    main { max-width: 1200px; margin: auto; padding: 2rem 1rem; }
+    .eyebrow { color: #5fe3c2; text-transform: uppercase; letter-spacing: .16em; font-size: .78rem; font-weight: 700; }
+    .summary { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1.5rem 0; }
+    .stat, .card, .status { background: #152239; border: 1px solid #293a55; border-radius: 16px; padding: 1.2rem; }
+    .stat { min-width: 180px; flex: 1; }
+    .stat strong { display: block; font-size: 2rem; }
+    .controls { display: flex; gap: .7rem; flex-wrap: wrap; margin: 1.5rem 0; }
+    input, select { background: #101b2f; color: white; border: 1px solid #405674; border-radius: 8px; padding: .8rem; font: inherit; }
+    input { flex: 2; min-width: 220px; }
+    select { flex: 1; min-width: 150px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(290px,1fr)); gap: 1rem; }
+    .card h2 { margin: .5rem 0; font-size: 1.2rem; }
+    .card a { color: #73e4d0; }
+    .badge { display: inline-block; background: #254d52; color: #b8fff0; padding: .25rem .6rem; border-radius: 50px; font-size: .8rem; }
+    .meta { color: #c2d0e0; font-size: .9rem; }
+    .status { margin: 1rem 0; }
+    .empty { padding: 2rem; text-align: center; border: 1px dashed #49607e; border-radius: 16px; }
+  </style>
+</head>
+<body>
+  <header><div class="eyebrow">DGIT Services</div><h1>Opportunity Desk</h1><p>Find and review federal IT and cybersecurity contracts and remote jobs.</p></header>
+  <main>
+    <div class="summary"><div class="stat"><span>Matches</span><strong id="count">0</strong></div><div class="stat"><span>Contracts</span><strong id="contracts">0</strong></div><div class="stat"><span>Jobs</span><strong id="jobs">0</strong></div><div class="stat"><span>Last search</span><strong id="updated" style="font-size:1.2rem">—</strong></div></div>
+    <div class="status" id="status">Loading results…</div>
+    <div class="controls"><input id="query" type="search" placeholder="Search titles and matched skills" aria-label="Search opportunities"><select id="kind" aria-label="Filter type"><option value="all">All opportunities</option><option value="Contract">Contracts</option><option value="Job">Jobs</option></select></div>
+    <div id="results" class="grid"></div>
+  </main>
+  <script>
+    let opportunities = [];
+    const text = value => String(value ?? '');
+    function render() {
+      const q = document.getElementById('query').value.toLowerCase();
+      const kind = document.getElementById('kind').value;
+      const filtered = opportunities.filter(o => (kind === 'all' || o.kind === kind) && (text(o.title) + ' ' + text(o.matched?.join(' '))).toLowerCase().includes(q));
+      const grid = document.getElementById('results'); grid.replaceChildren();
+      if (!filtered.length) { const e = document.createElement('div'); e.className = 'empty'; e.textContent = 'No matches to show. Run the tracker with API credentials or adjust the filters.'; grid.append(e); return; }
+      for (const o of filtered) {
+        const card = document.createElement('article'); card.className = 'card';
+        const badge = document.createElement('span'); badge.className = 'badge'; badge.textContent = text(o.kind);
+        const title = document.createElement('h2'); title.textContent = text(o.title);
+        const meta = document.createElement('p'); meta.className = 'meta'; meta.textContent = `Deadline: ${text(o.deadline) || 'Check source'} · Match score: ${text(o.score)}`;
+        const skills = document.createElement('p'); skills.textContent = `Matched: ${o.matched?.join(', ') || 'None'}`;
+        const link = document.createElement('a'); link.textContent = 'Review original source →'; link.target = '_blank'; link.rel = 'noopener noreferrer';
+        const url = text(o.link); if (/^https:\/\//.test(url)) link.href = url; else link.removeAttribute('href');
+        card.append(badge,title,meta,skills,link); grid.append(card);
+      }
+    }
+    Promise.resolve().then(async () => {
+      const response = await fetch('opportunities.json', {cache:'no-store'});
+      if (!response.ok) throw new Error('Run opportunity_agent.py to create opportunities.json.');
+      const data = await response.json(); opportunities = data.opportunities || [];
+      document.getElementById('count').textContent = opportunities.length;
+      document.getElementById('contracts').textContent = opportunities.filter(o=>o.kind==='Contract').length;
+      document.getElementById('jobs').textContent = opportunities.filter(o=>o.kind==='Job').length;
+      document.getElementById('updated').textContent = text(data.generated_at);
+      document.getElementById('status').textContent = data.source_status?.length ? data.source_status.join(' · ') : 'Search completed. Review the original source before pursuing any match.';
+      render();
+    }).catch(err => { document.getElementById('status').textContent = err.message; render(); });
+    document.getElementById('query').addEventListener('input', render);
+    document.getElementById('kind').addEventListener('change', render);
+  </script>
+</body>
+</html>
+
