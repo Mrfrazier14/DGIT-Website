@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payments &amp; Pricing | DivineGuard IT Services LLC</title>
+<meta name="description" content="Explore DivineGuard IT Services pricing, request a quote, and find guidance for Stripe invoice payments and recurring managed-service billing.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="navbar">
+    <a href="index.html" class="brand">
+      <svg class="brand-mark" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M32 4 L56 12 V30 C56 46 46 56 32 60 C18 56 8 46 8 30 V12 Z" fill="#7a0e1c" stroke="#d4af37" stroke-width="3"/>
+        <path d="M22 32 L29 39 L43 24" stroke="#f2d675" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <span class="brand-text">
+        <span class="brand-name">DivineGuard</span>
+        <span class="brand-sub">IT Services LLC</span>
+      </span>
+    </a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="site-navigation">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="site-navigation">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="payments.html" class="active" aria-current="page">Payments</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="contact.html" class="nav-cta">Get a Quote</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main-content" class="payments-page">
+<section class="page-header">
+  <div class="container">
+    <h1>Payments &amp; Pricing</h1>
+    <p>DivineGuard IT Services LLC</p>
+    <p>Clear service rates. Billing that fits your engagement.</p>
+  </div>
+</section>
+<section class="section" aria-labelledby="payment-options-title">
+  <div class="container">
+    <div class="section-intro">
+      <span class="eyebrow">Your Next Step</span>
+      <h2 id="payment-options-title">Consultation or existing invoice?</h2>
+      <p>All prices are in USD. For custom work, we confirm scope and pricing before sending a payment request.</p>
+    </div>
+    <div class="grid grid-2">
+      <article class="card payment-card">
+        <span class="eyebrow">Fixed Price</span>
+        <h3>30-Minute IT/Cyber Consultation</h3>
+        <p class="payment-price">$75 <span>/ 30 minutes</span></p>
+        <p>Discuss your IT or cybersecurity needs and next steps.</p>
+        <!-- STRIPE PAYMENT LINK PLACEHOLDER: replace this disabled button with a verified live Stripe Payment Link. See PAYMENTS_SETUP.md. -->
+        <button class="btn btn-primary" type="button" disabled aria-describedby="consultation-payment-status">Stripe Payment Link — Coming Soon</button>
+        <p id="consultation-payment-status" class="form-note">Online consultation payment is not available yet. Contact us to arrange your consultation.</p>
+        <a class="card-link" href="contact.html?service=consultation#contact-form">Ask About a Consultation &rarr;</a>
+      </article>
+      <article class="card payment-card" id="existing-invoice">
+        <span class="eyebrow">Already a Client?</span>
+        <h3>Pay Existing Invoice</h3>
+        <p>Open the invoice or payment link sent to you by DivineGuard and use its secure payment button. Your invoice shows the amount due and available payment methods.</p>
+        <p>Need the link resent? Contact billing support with your invoice number. Please do not email card or bank details.</p>
+        <a class="btn btn-primary" href="mailto:AaronFrazier@DGITServices.onmicrosoft.com?subject=Existing%20invoice%20payment%20link%20request">Request My Invoice Link</a>
+        <a class="card-link" href="contact.html?service=billing#contact-form">Contact Billing Support &rarr;</a>
+      </article>
+    </div>
+  </div>
+</section>
+<section class="section section-alt" aria-labelledby="services-pricing-title">
+  <div class="container">
+    <div class="section-intro">
+      <span class="eyebrow">Service Rates</span>
+      <h2 id="services-pricing-title">Choose the support you need</h2>
+      <p>Hourly work is billed for the agreed engagement. Starting prices vary with scope, complexity, and service requirements. Request a quote to confirm your final price.</p>
+    </div>
+    <div class="grid grid-3">
+      <article class="card payment-card">
+        <h3>IT Support &amp; Troubleshooting</h3>
+        <p class="payment-price">$100 <span>/hr</span></p>
+        <p>Remote support and troubleshooting scoped to your needs.</p>
+        <a class="card-link" href="contact.html?service=remote-it-support#contact-form" aria-label="Request a quote for IT Support &amp; Troubleshooting">Request a Quote &rarr;</a>
+      </article>
+      <article class="card payment-card">
+        <h3>Software Engineering</h3>
+        <p class="payment-price">$100 <span>/hr</span></p>
+        <p>Custom software and application work based on an agreed scope.</p>
+        <a class="card-link" href="contact.html?service=software-development#contact-form" aria-label="Request a quote for Software Engineering">Request a Quote &rarr;</a>
+      </article>
+      <article class="card payment-card">
+        <h3>Cybersecurity Services</h3>
+        <p class="payment-price">$125 <span>/hr</span></p>
+        <p>Security consulting and technical support for your environment.</p>
+        <a class="card-link" href="contact.html?service=cybersecurity-consulting#contact-form" aria-label="Request a quote for Cybersecurity Services">Request a Quote &rarr;</a>
+      </article>
+      <article class="card payment-card">
+        <h3>Cybersecurity Assessment</h3>
+        <p class="payment-price">$500 <span>starting price</span></p>
+        <p>An assessment tailored to your systems and security priorities.</p>
+        <a class="card-link" href="contact.html?service=cybersecurity-assessment#contact-form" aria-label="Request a quote for Cybersecurity Assessment">Request a Quote &rarr;</a>
+      </article>
+      <article class="card payment-card">
+        <h3>Website Development</h3>
+        <p class="payment-price">$1,500 <span>starting price</span></p>
+        <p>A website built around your business, content, and requirements.</p>
+        <a class="card-link" href="contact.html?service=websites#contact-form" aria-label="Request a quote for Website Development">Request a Quote &rarr;</a>
+      </article>
+      <article class="card payment-card">
+        <h3>Managed IT Services</h3>
+        <p class="payment-price">$500 <span>/month · starting price</span></p>
+        <p>Ongoing IT support with recurring billing after scope and terms are agreed.</p>
+        <a class="card-link" href="contact.html?service=managed-it#contact-form" aria-label="Request a quote for Managed IT Services">Request a Quote &rarr;</a>
+      </article>
+      <article class="card payment-card">
+        <h3>Cybersecurity + Managed IT</h3>
+        <p class="payment-price">$1,500 <span>/month · starting price</span></p>
+        <p>Combined IT and security services with an agreed monthly plan.</p>
+        <a class="card-link" href="contact.html?service=cybersecurity-managed-it#contact-form" aria-label="Request a quote for Cybersecurity + Managed IT">Request a Quote &rarr;</a>
+      </article>
+    </div>
+  </div>
+</section>
+<section class="section" aria-labelledby="billing-title">
+  <div class="container">
+    <div class="section-intro">
+      <span class="eyebrow">How Billing Works</span>
+      <h2 id="billing-title">Secure payment options</h2>
+      <p>Stripe payment setup is in progress. We will confirm the options available for your engagement before requesting payment.</p>
+    </div>
+    <div class="grid grid-3">
+      <article class="card">
+        <h3>Cards &amp; ACH</h3>
+        <p>Stripe-hosted payment pages can offer credit/debit cards and ACH bank payments when enabled. Available methods appear on your checkout or invoice. ACH payments may take time to confirm.</p>
+      </article>
+      <article class="card">
+        <h3>Invoices &amp; Payment Links</h3>
+        <p>For hourly and custom work, approve your quote first. We then send an invoice or payment link for the agreed amount.</p>
+      </article>
+      <article class="card">
+        <h3>Recurring Managed Services</h3>
+        <p>Monthly managed-service billing is arranged after you approve the scope, monthly amount, and service terms. Your plan and payment authorization must be confirmed before recurring charges begin.</p>
+      </article>
+    </div>
+  </div>
+</section>
+<section class="cta-band" aria-labelledby="billing-help-title">
+  <div class="container">
+    <h2 id="billing-help-title">Questions about pricing or payments?</h2>
+    <p>Contact DivineGuard IT Services LLC for a quote or help with an existing invoice.</p>
+    <a class="payment-support" href="mailto:AaronFrazier@DGITServices.onmicrosoft.com">AaronFrazier@DGITServices.onmicrosoft.com</a>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <svg class="brand-mark" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M32 4 L56 12 V30 C56 46 46 56 32 60 C18 56 8 46 8 30 V12 Z" fill="#7a0e1c" stroke="#d4af37" stroke-width="3"/>
+            <path d="M22 32 L29 39 L43 24" stroke="#f2d675" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+          <span class="brand-name">DivineGuard IT Services LLC</span>
+        </div>
+        <p>Remote IT support, cybersecurity, software development, and government technology solutions.</p>
+      </div>
+      <div class="footer">
+        <h4>Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="payments.html">Payments</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer">
+        <h4>Contact</h4>
+        <ul class="footer-links">
+          <li><a href="tel:+17253248779">Phone: 725-324-8779</a></li>
+          <li><a href="mailto:aaronfrazier@dgitservices.onmicrosoft.com">Email: aaronfrazier@dgitservices.onmicrosoft.com</a></li>
+          <li>Remote support available nationwide</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; <span id="year"></span> <strong>DivineGuard IT Services LLC</strong>. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
