@@ -662,7 +662,7 @@ p {
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 900px) {
   .nav-toggle {
     display: flex;
   }
@@ -693,6 +693,9 @@ p {
     text-align: center;
   }
 
+}
+
+@media (max-width: 720px) {
   .hero h1 {
     font-size: 2rem;
   }
@@ -724,3 +727,17 @@ p {
     grid-template-columns: 1fr;
   }
 }
+
+/* Payments reuse the site's existing palette, cards, and grid. */
+.payment-card { display: flex; flex-direction: column; min-width: 0; }
+.payment-card .card-link:last-child { align-self: flex-start; margin-top: auto; padding-top: 14px; }
+.payment-price { color: var(--red-deep); font-size: 2rem; font-weight: 700; }
+.payment-price span { display: inline-block; font-size: 0.95rem; font-weight: 400; }
+.payment-card .btn { text-align: center; }
+.payment-card .btn:disabled { cursor: not-allowed; background: var(--gray-100); border-color: var(--gray-300); color: var(--gray-600); transform: none; }
+.payment-card .form-note { margin-top: 14px; }
+.payment-support { color: var(--gold-light); font-weight: 600; text-decoration: underline; overflow-wrap: anywhere; }
+.footer-links a, .contact-info-item a { overflow-wrap: anywhere; }
+.footer-grid > *, .contact-grid > *, .contact-info-item > div { min-width: 0; }
+#contact-form, #existing-invoice { scroll-margin-top: 115px; }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--gold-dark); outline-offset: 4px; }
