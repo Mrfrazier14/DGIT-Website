@@ -3,3 +3,5 @@
 
 .form-hidden{display:none}
 .person>a{overflow-wrap:anywhere;max-width:100%}
+
+.team-portrait{display:block;width:100%;max-width:280px;height:290px;object-fit:cover;object-position:50% 44%;border-radius:5px;margin-bottom:30px}.founder-portrait{display:block;width:100%;max-width:450px;height:auto;max-height:520px;object-fit:cover;object-position:center;border-radius:5px;margin-bottom:32px}
