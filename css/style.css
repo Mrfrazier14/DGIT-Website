@@ -32,3 +32,6 @@
 @media(min-width:701px) and (max-width:1300px){header .nav-links{flex-basis:100%;width:100%;justify-content:space-between}}
 .form-panel select{max-width:100%}.form-panel textarea{min-height:140px}.form-panel .button{cursor:pointer;font-family:inherit}.form-panel .form-note{font-size:13px}.form-row>div{min-width:0}
 @media(max-width:700px){.actions{flex-wrap:wrap}.contact-line{overflow-wrap:anywhere}}
+
+/* Help and information pages */
+.faq-list{max-width:960px}.faq-list details{border-bottom:1px solid #d8c8b0;padding:22px 0}.faq-list summary{font-weight:700;font-size:20px;cursor:pointer;line-height:1.5}.faq-list summary:focus-visible{outline:3px solid #701b2b;outline-offset:6px}.faq-list details p{line-height:1.8;margin:18px 0 0}.policy-copy{max-width:900px}.policy-copy h2{font-size:28px;margin-top:36px}.policy-copy p{line-height:1.8}.policy-copy a,.faq-list p a{text-decoration:underline;text-underline-offset:3px}.inquiry-next{margin-top:28px}
