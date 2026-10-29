@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded',()=>{
  'workshops':'training','webinar-production':'training','podcast-production':'training','content-collaboration':'training',
  'micro-purchase':'government-subcontracting','signage':'government-subcontracting','govcon-readiness':'government-subcontracting','nationwide':'government-subcontracting'
  };
- const value=aliases[requested]||requested;
+ const value=Array.from(field.options).some(o=>o.value===requested)?requested:(aliases[requested]||requested);
  if(value&&Array.from(field.options).some(o=>o.value===value)){
  field.value=value;
  const text=document.getElementById('message');
